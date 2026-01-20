@@ -1,19 +1,5 @@
 "use client";
 import { CustomContainer } from "@/components/custom/CustomContainer";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import {
   addEdge,
   applyEdgeChanges,
@@ -21,7 +7,6 @@ import {
   Background,
   BackgroundVariant,
   Connection,
-  ConnectionLineType,
   ConnectionMode,
   Controls,
   Edge,
@@ -29,7 +14,6 @@ import {
   MiniMap,
   Node,
   NodeChange,
-  Panel,
   PanelPosition,
   ReactFlow,
 } from "@xyflow/react";
@@ -37,12 +21,12 @@ import "@xyflow/react/dist/style.css";
 import { useCallback, useState } from "react";
 import { v4 } from "uuid";
 import { BasicNode } from "./components/BasicNode";
-import { PrimaryNode } from "./components/PrimaryNode";
-import { SecondaryNode } from "./components/SecondaryNode";
-import { nodeDataType } from "./types";
 import { CurrentNodeDataProvider } from "./components/CurrentNodeDataProvider";
 import { CustomeDrawer } from "./components/CustomDrawer";
-import { initialNodes } from "./constants";
+import { PrimaryNode } from "./components/PrimaryNode";
+import { SecondaryNode } from "./components/SecondaryNode";
+import { nodesWithPositions } from "./constants";
+import { nodeDataType } from "./types";
 
 const initialEdges: Edge[] = [
   // {
@@ -74,7 +58,7 @@ const nodeTypes = {
 
 const panelPosition: PanelPosition = "top-left";
 const ReactFlowPage = () => {
-  const [nodes, setNodes] = useState<Node[]>(initialNodes);
+  const [nodes, setNodes] = useState<Node[]>(nodesWithPositions);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
 
   const handleNodesChagne = useCallback((changes: NodeChange[]) => {
@@ -99,7 +83,7 @@ const ReactFlowPage = () => {
   const [type, setType] = useState("primaryNode");
   const [count, setCount] = useState(1);
   const [direction, setDirection] = useState<"horizontal" | "vertical">(
-    "horizontal"
+    "horizontal",
   );
   const [gapX, setGapX] = useState(40);
   const [gapY, setGapY] = useState(20);
@@ -172,7 +156,7 @@ const ReactFlowPage = () => {
           <Background color="skyblue" variant={BackgroundVariant.Cross} />
           <Controls />
           <MiniMap nodeColor={nodeColor} zoomable pannable />
-          <Panel position={panelPosition}>
+          {/* <Panel position={panelPosition}>
             <div className="p-6 pt-2 rounded-2xl flex flex-col gap-4 bg-slate-100 text-sky-500 border-2 border-pink-500 border-dashed shadow-lg">
               <div className="font-bold text-pink-500 text-xl">
                 Generate data quickly
@@ -272,7 +256,7 @@ const ReactFlowPage = () => {
               </div>
               <Button onClick={generateNodes}>generate</Button>
             </div>
-          </Panel>
+          </Panel> */}
         </ReactFlow>
         <CustomeDrawer />
       </CurrentNodeDataProvider>

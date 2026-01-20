@@ -1,6 +1,13 @@
 import { Handle, Position } from "@xyflow/react";
+import { nodeDataType } from "../types";
 
-export function CustomHandle({ type = Position.Left }: { type: Position }) {
+export function CustomHandle({
+  type = Position.Left,
+  bottomOffset,
+}: {
+  type: Position;
+  bottomOffset?: "left" | "right";
+}) {
   const getStyle = () => {
     switch (type) {
       case Position.Left:
@@ -22,6 +29,20 @@ export function CustomHandle({ type = Position.Left }: { type: Position }) {
           transform: "translateX(-50%)",
         };
       case Position.Bottom:
+        if (bottomOffset === "left") {
+          return {
+            bottom: "-4px",
+            left: "5%",
+            transform: "translateX(-50%)",
+          };
+        }
+        if (bottomOffset === "right") {
+          return {
+            bottom: "-4px",
+            right: "5%",
+            transform: "translateX(-50%)",
+          };
+        }
         return {
           bottom: "-4px",
           left: "50%",
@@ -45,5 +66,22 @@ export function CustomHandle({ type = Position.Left }: { type: Position }) {
         ...getStyle(), // 应用计算后的样式
       }}
     />
+  );
+}
+
+export function MultiHandle({ data }: { data: nodeDataType }) {
+  return (
+    <>
+      {data?.enableHandle?.top && <CustomHandle type={Position.Top} />}
+      {data?.enableHandle?.bottom && <CustomHandle type={Position.Bottom} />}
+      {data?.enableHandle?.right && <CustomHandle type={Position.Right} />}
+      {data?.enableHandle?.left && <CustomHandle type={Position.Left} />}
+      {data?.enableHandle?.bottomLeft && (
+        <CustomHandle type={Position.Left} bottomOffset="left" />
+      )}
+      {data?.enableHandle?.bottomRight && (
+        <CustomHandle type={Position.Left} bottomOffset="right" />
+      )}
+    </>
   );
 }

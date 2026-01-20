@@ -1,10 +1,7 @@
-import { Button } from "@/components/ui/button";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
@@ -13,11 +10,12 @@ import {
   CurrentNodeDataContext,
   SetCurrentNodeDataContext,
 } from "./CurrentNodeDataProvider";
+import NodeDataDisplay from "./NodeDataDisplay";
 
-export const CustomeDrawer = memo(() => {
+export const CustomeDrawer = memo(function CustomeDrawer() {
   const currentNodeData = useContext(CurrentNodeDataContext);
   const setCurrentNodeData = useContext(SetCurrentNodeDataContext);
-  console.log("rerender");
+
   const open = useMemo(() => {
     return !!currentNodeData;
   }, [currentNodeData]);
@@ -38,14 +36,10 @@ export const CustomeDrawer = memo(() => {
               Complete node details are displayed here.
             </DrawerDescription>
           </DrawerHeader>
-          <div>dfksfldskjfl</div>
+          <div>
+            {currentNodeData && <NodeDataDisplay node={currentNodeData} />}
+          </div>
         </div>
-        <DrawerFooter>
-          <Button>Submit</Button>
-          <DrawerClose asChild>
-            <Button variant={"secondary"}>close</Button>
-          </DrawerClose>
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );

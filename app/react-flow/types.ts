@@ -7,10 +7,25 @@ export type nodeDataType = {
   createTime: string;
   introduction: string;
   employ: string;
-  enableHandle: {
+  enableHandle?: {
     top: boolean;
     right: boolean;
     left: boolean;
     bottom: boolean;
+    bottomLeft: boolean;
+    bottomRight: boolean;
   };
+  childrenConfig?: {
+    connectType: string;
+    gap: number;
+    parentGap: number;
+  };
+  children?: customNode[];
+};
+
+export type customNode = {
+  id: string;
+  data: nodeDataType;
+  position: { x: number; y: number };
+  type: "primaryNode" | "secondaryNode" | "basicNode";
 };

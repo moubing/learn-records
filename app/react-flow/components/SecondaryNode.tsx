@@ -1,42 +1,36 @@
-import { Input } from "@/components/ui/input";
-import { Position, useReactFlow } from "@xyflow/react";
-import { memo, useCallback, useContext, useState } from "react";
-import { CustomHandle } from "./CustomHandle";
 import { Button } from "@/components/ui/button";
-import { nodeDataType } from "../types";
-import { SetCurrentNodeDataContext } from "./CurrentNodeDataProvider";
+import { useReactFlow } from "@xyflow/react";
 import { Eye, Trash2 } from "lucide-react";
+import { memo, useCallback, useContext } from "react";
+import { customNode } from "../types";
+import { SetCurrentNodeDataContext } from "./CurrentNodeDataProvider";
+import { MultiHandle } from "./CustomHandle";
 
 export const SecondaryNode = memo(function SecondaryNode({
   id,
   data,
-}: {
-  id: string;
-  data: nodeDataType;
-}) {
-  const [isClicked, setIsClicked] = useState(false);
-  const [name, setName] = useState("default name");
+  position,
+  type,
+}: customNode) {
   const setCurrentNodeData = useContext(SetCurrentNodeDataContext);
-  console.log("sendary");
 
   const showCurrentNodeData = useCallback(() => {
-    setCurrentNodeData(data);
-  }, []);
-
+    setCurrentNodeData({ id, data, position, type });
+  }, [data, id, position, setCurrentNodeData, type]);
   const reactFlowInstance = useReactFlow();
   const deleteNode = useCallback(() => {
     reactFlowInstance.setNodes((nodes) =>
-      nodes.filter((node) => node.id !== id)
+      nodes.filter((node) => node.id !== id),
     );
 
     reactFlowInstance.setEdges((edges) =>
-      edges.filter((edge) => edge.source !== id && edge.target !== id)
+      edges.filter((edge) => edge.source !== id && edge.target !== id),
     );
-  }, [reactFlowInstance]);
+  }, [id, reactFlowInstance]);
 
   return (
-    <div className="relative p-2 rounded-xl w-40 flex items-center justify-center shadow bg-[#3B85ED] text-white group">
-      <div className="group-hover:opacity-100 opacity-0 transition flex items-center gap-1 absolute -top-12 right-0 text-pink-500 z-50 cursor-default">
+    <div className="relative py-[11px] w-40 h-12 leading-[27px] text-[16px] rounded-[11px] flex items-center justify-center shadow bg-[#3B85ED] text-white group">
+      <div className="group-hover:opacity-100 opacity-0  transition flex items-center gap-1 absolute -top-12 right-0 text-pink-500 z-50 cursor-default">
         <Button variant={"outline"} size={"icon"} onClick={showCurrentNodeData}>
           <Eye />
         </Button>
@@ -44,27 +38,8 @@ export const SecondaryNode = memo(function SecondaryNode({
           <Trash2 />
         </Button>
       </div>
-      <Button
-        className="w-fit cursor-pointer px-3 py-1 relative "
-        onClick={() => setIsClicked(true)}
-        variant="ghost"
-      >
-        {name}
-        {isClicked && (
-          <Input
-            autoFocus
-            type="text"
-            className="px-3 py-1 focus:border-none absolute top-0 left-0 w-full h-full focus-visible:ring-2 focus-visible:ring-cyan-500"
-            value={name}
-            onChange={(e) => setName(e.target.value.trim())}
-            onBlur={() => setIsClicked(false)}
-          />
-        )}
-      </Button>
-      {data?.enableHandle?.top && <CustomHandle type={Position.Top} />}
-      {data?.enableHandle?.bottom && <CustomHandle type={Position.Bottom} />}
-      {data?.enableHandle?.right && <CustomHandle type={Position.Right} />}
-      {data?.enableHandle?.left && <CustomHandle type={Position.Left} />}
+      <div className="">{id}</div>
+      <MultiHandle data={data} />
     </div>
   );
 });

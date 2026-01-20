@@ -1,16 +1,14 @@
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { createContext } from "react";
-import { nodeDataType } from "../types";
+import { customNode } from "../types";
 
-export const CurrentNodeDataContext = createContext<nodeDataType | null>(null);
+export const CurrentNodeDataContext = createContext<customNode | null>(null);
 export const SetCurrentNodeDataContext = createContext<
-  Dispatch<SetStateAction<nodeDataType | null>>
+  Dispatch<SetStateAction<customNode | null>>
 >(() => {});
 
 export function CurrentNodeDataProvider({ children }: { children: ReactNode }) {
-  const [currentNodeData, CurrentNodeData] = useState<nodeDataType | null>(
-    null
-  );
+  const [currentNodeData, CurrentNodeData] = useState<customNode | null>(null);
   return (
     <CurrentNodeDataContext value={currentNodeData}>
       <SetCurrentNodeDataContext value={CurrentNodeData}>
